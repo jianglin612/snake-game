@@ -1,6 +1,6 @@
-# Snake Game
+# Spanish Learning Snake Game
 
-A classic Snake game implemented in JavaScript and HTML5 Canvas, featuring cartoon-style animations and modern visual effects.
+A fun educational twist on the classic Snake game! Learn Spanish vocabulary while playing. The snake eats Spanish words instead of traditional food, helping you learn vocabulary as you play.
 
 🎮 [Play the Game](https://jianglin612.github.io/snake-game)
 
@@ -12,11 +12,18 @@ A classic Snake game implemented in JavaScript and HTML5 Canvas, featuring carto
    - ↓ (Down Arrow): Move down
    - ← (Left Arrow): Move left
    - → (Right Arrow): Move right
-3. Eat the bouncing red food to grow and increase your score
+3. Guide the snake to eat Spanish words (their English translations are shown above)
 4. Avoid hitting the walls or the snake's own body
-5. The snake speeds up as you eat more food
+5. The snake speeds up as you learn more words
 
 ## Features
+
+### Educational Features
+- Learn Spanish vocabulary while playing
+- Spanish words with English translations
+- Words appear in easy-to-read format
+- Vocabulary includes common everyday words
+- Learning through repetition and engagement
 
 ### Gameplay
 - Responsive controls
@@ -28,8 +35,8 @@ A classic Snake game implemented in JavaScript and HTML5 Canvas, featuring carto
 ### Visual Effects
 - Cartoon-style animated snake with gradient coloring
 - Animated snake eyes that follow movement
-- Bouncing food with shine effect
-- Particle effects when collecting food
+- Bouncing word cards with translations
+- Particle effects when collecting words
 - Modern UI with shadows and rounded corners
 
 ## Development

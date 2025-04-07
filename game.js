@@ -2,8 +2,8 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
 
-const gridSize = 20;
-const tileCount = canvas.width / gridSize;
+const gridSize = 30; // Increased grid size for words
+const tileCount = Math.floor(canvas.width / gridSize);
 
 // Animation properties
 let snakeEyeAngle = 0;
@@ -12,13 +12,30 @@ let foodBounceDirection = 1;
 let snakeColors = ['#32CD32', '#228B22', '#006400'];
 let particleEffects = [];
 
+// Spanish-English word pairs
+const wordPairs = [
+    { spanish: 'perro', english: 'dog' },
+    { spanish: 'gato', english: 'cat' },
+    { spanish: 'casa', english: 'house' },
+    { spanish: 'agua', english: 'water' },
+    { spanish: 'sol', english: 'sun' },
+    { spanish: 'luna', english: 'moon' },
+    { spanish: 'libro', english: 'book' },
+    { spanish: 'árbol', english: 'tree' },
+    { spanish: 'pan', english: 'bread' },
+    { spanish: 'leche', english: 'milk' }
+];
+
+let currentWordPair = null;
+
 let score = 0;
 let snake = [
     { x: 10, y: 10 }
 ];
 let food = {
-    x: Math.floor(Math.random() * tileCount),
-    y: Math.floor(Math.random() * tileCount)
+    x: Math.floor(Math.random() * (tileCount - 2)),
+    y: Math.floor(Math.random() * (tileCount - 2)),
+    word: wordPairs[Math.floor(Math.random() * wordPairs.length)]
 };
 let dx = 0;
 let dy = 0;
@@ -48,7 +65,7 @@ function drawGame() {
     snake.unshift(head);
 
     // Check if snake ate food
-    if (head.x === food.x && head.y === food.y) {
+    if ((head.x === food.x || head.x === food.x + 1) && head.y === food.y) {
         score += 10;
         scoreElement.textContent = `Score: ${score}`;
         generateFood();
@@ -140,47 +157,64 @@ function drawGame() {
     // Animate snake eyes
     snakeEyeAngle += 0.1;
 
-    // Draw bouncing food with cartoon style
-    ctx.fillStyle = '#ff4444';
+    // Draw word as food with bounce effect
     foodBounceOffset += 0.2 * foodBounceDirection;
     if (Math.abs(foodBounceOffset) > 3) {
         foodBounceDirection *= -1;
     }
-    
-    // Draw food with bounce effect
+
+    // Draw word background
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.beginPath();
-    ctx.arc(
-        food.x * gridSize + gridSize/2,
-        food.y * gridSize + gridSize/2 + foodBounceOffset,
-        gridSize/2 - 2,
-        0,
-        Math.PI * 2
+    ctx.roundRect(
+        food.x * gridSize,
+        food.y * gridSize + foodBounceOffset,
+        gridSize * 2,
+        gridSize,
+        5
     );
     ctx.fill();
-    
-    // Add shine effect to food
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.beginPath();
-    ctx.arc(
-        food.x * gridSize + gridSize/3,
-        food.y * gridSize + gridSize/3 + foodBounceOffset,
-        3,
-        0,
-        Math.PI * 2
+
+    // Draw Spanish word
+    ctx.fillStyle = '#ff4444';
+    ctx.font = '16px Comic Sans MS';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(
+        food.word.spanish,
+        food.x * gridSize + gridSize,
+        food.y * gridSize + gridSize/2 + foodBounceOffset
     );
-    ctx.fill();
+
+    // Draw English translation above
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.font = '14px Arial';
+    ctx.fillText(
+        food.word.english,
+        food.x * gridSize + gridSize,
+        food.y * gridSize - 10 + foodBounceOffset
+    );
 }
 
 function generateFood() {
+    // Get a new random word pair
+    const newWord = wordPairs[Math.floor(Math.random() * wordPairs.length)];
+    
     food = {
-        x: Math.floor(Math.random() * tileCount),
-        y: Math.floor(Math.random() * tileCount)
+        x: Math.floor(Math.random() * (tileCount - 2)), // -2 to ensure space for longer words
+        y: Math.floor(Math.random() * (tileCount - 2)),
+        word: newWord
     };
+    
     // Make sure food doesn't spawn on snake
-    while (snake.some(segment => segment.x === food.x && segment.y === food.y)) {
+    while (snake.some(segment => 
+        (segment.x === food.x || segment.x === food.x + 1) && 
+        segment.y === food.y
+    )) {
         food = {
-            x: Math.floor(Math.random() * tileCount),
-            y: Math.floor(Math.random() * tileCount)
+            x: Math.floor(Math.random() * (tileCount - 2)),
+            y: Math.floor(Math.random() * (tileCount - 2)),
+            word: newWord
         };
     }
 }
