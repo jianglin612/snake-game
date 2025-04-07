@@ -238,8 +238,9 @@ function isGameOver() {
 function resetGame() {
     snake = [{ x: 10, y: 10 }];
     food = {
-        x: Math.floor(Math.random() * tileCount),
-        y: Math.floor(Math.random() * tileCount)
+        x: Math.floor(Math.random() * (tileCount - 2)),
+        y: Math.floor(Math.random() * (tileCount - 2)),
+        word: wordPairs[Math.floor(Math.random() * wordPairs.length)]
     };
     dx = 0;
     dy = 0;
